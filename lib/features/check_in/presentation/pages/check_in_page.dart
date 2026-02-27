@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../data/models/health_journal_entry.dart';
+import '../../../voice_notes/domain/audio_recorder_service.dart';
 import '../../../voice_notes/presentation/providers/voice_notes_provider.dart';
 import '../../domain/entry_parser_service.dart';
 import '../providers/check_in_provider.dart';
@@ -44,9 +45,9 @@ class _CheckInPageState extends ConsumerState<CheckInPage> {
   }
 
   Future<void> _handleRecordingComplete(
-    dynamic recordingResult,
+    RecordingResult recordingResult,
   ) async {
-    final path = recordingResult.path as String;
+    final path = recordingResult.path;
 
     setState(() => _isTranscribing = true);
 

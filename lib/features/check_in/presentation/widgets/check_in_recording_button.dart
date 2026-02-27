@@ -15,7 +15,7 @@ class CheckInRecordingButton extends ConsumerStatefulWidget {
 
   /// Called when recording stops, with the [RecordingResult] containing
   /// the audio file path and duration.
-  final void Function(RecordingResult result) onRecordingComplete;
+  final Future<void> Function(RecordingResult result) onRecordingComplete;
 
   @override
   ConsumerState<CheckInRecordingButton> createState() =>
@@ -83,7 +83,7 @@ class _CheckInRecordingButtonState extends ConsumerState<CheckInRecordingButton>
 
       final result = await recorder.stopRecording();
       if (result != null) {
-        widget.onRecordingComplete(result);
+        await widget.onRecordingComplete(result);
       } else {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -134,14 +134,14 @@ class _CheckInRecordingButtonState extends ConsumerState<CheckInRecordingButton>
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: isRecording
-                      ? AppColors.error.withOpacity(
-                          0.8 + (_animationController.value * 0.2),
+                      ? AppColors.error.withValues(
+                          alpha: 0.8 + (_animationController.value * 0.2),
                         )
                       : AppColors.primary,
                   boxShadow: [
                     BoxShadow(
                       color: (isRecording ? AppColors.error : AppColors.primary)
-                          .withOpacity(0.3),
+                          .withValues(alpha: 0.3),
                       blurRadius: isRecording
                           ? 20 + (_animationController.value * 10)
                           : 10,

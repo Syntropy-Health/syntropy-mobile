@@ -11,10 +11,12 @@ class ConfirmCheckInSheet extends StatefulWidget {
     super.key,
     required this.transcription,
     required this.parsedEntries,
+    this.scrollController,
   });
 
   final String transcription;
   final List<ParsedEntry> parsedEntries;
+  final ScrollController? scrollController;
 
   /// Shows the confirmation sheet. Returns a list of confirmed entries
   /// as (entryType, content) tuples, or null if cancelled.
@@ -39,6 +41,7 @@ class ConfirmCheckInSheet extends StatefulWidget {
         builder: (context, scrollController) => ConfirmCheckInSheet(
           transcription: transcription,
           parsedEntries: parsedEntries,
+          scrollController: scrollController,
         ),
       ),
     );
@@ -118,10 +121,10 @@ class _ConfirmCheckInSheetState extends State<ConfirmCheckInSheet> {
             width: double.infinity,
             padding: AppSpacing.cardPadding,
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.05),
+              color: AppColors.primary.withValues(alpha: 0.05),
               borderRadius: AppSpacing.borderRadiusMd,
               border: Border.all(
-                color: AppColors.primary.withOpacity(0.2),
+                color: AppColors.primary.withValues(alpha: 0.2),
               ),
             ),
             child: Column(
@@ -157,6 +160,7 @@ class _ConfirmCheckInSheetState extends State<ConfirmCheckInSheet> {
           // Parsed entries list
           Expanded(
             child: ListView.builder(
+              controller: widget.scrollController,
               itemCount: _entries.length,
               itemBuilder: (context, index) {
                 final entry = _entries[index];
@@ -168,7 +172,7 @@ class _ConfirmCheckInSheetState extends State<ConfirmCheckInSheet> {
                     leading: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: color.withOpacity(0.1),
+                        color: color.withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
