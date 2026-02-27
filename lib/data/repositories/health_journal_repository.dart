@@ -141,6 +141,36 @@ class HealthJournalRepository {
     }
   }
 
+  Future<Result<List<HealthJournalEntry>>> getTodayEntries({
+    required String userId,
+  }) async {
+    try {
+      final now = DateTime.now();
+      final startOfDay = DateTime(now.year, now.month, now.day);
+      final endOfDay = startOfDay.add(const Duration(days: 1));
+
+      final results = await databaseHelper.query(
+        'health_journal_entries',
+        where: 'user_id = ? AND entry_date >= ? AND entry_date < ?',
+        whereArgs: [
+          userId,
+          startOfDay.toIso8601String(),
+          endOfDay.toIso8601String(),
+        ],
+        orderBy: 'created_at DESC',
+      );
+
+      final entries = results
+          .map((map) => HealthJournalEntryExtension.fromDbMap(map))
+          .toList();
+
+      return Right(entries);
+    } catch (e, stackTrace) {
+      AppLogger.error("Failed to get today's entries", 'HealthJournalRepo', e, stackTrace);
+      return Left(CacheFailure(message: "Failed to get today's entries: $e"));
+    }
+  }
+
   Future<Result<List<HealthJournalEntry>>> getUnprocessedEntries({
     int limit = 100,
   }) async {

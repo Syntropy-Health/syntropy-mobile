@@ -1,6 +1,7 @@
 abstract class Routes {
   // Route paths
   static const String home = '/';
+  static const String checkIn = '/check-in';
   static const String voiceNotes = '/voice-notes';
   static const String healthAnalysis = '/health-analysis';
   static const String catalog = '/catalog';
@@ -9,6 +10,7 @@ abstract class Routes {
 
   // Route names
   static const String homeName = 'home';
+  static const String checkInName = 'check-in';
   static const String voiceNotesName = 'voice-notes';
   static const String healthAnalysisName = 'health-analysis';
   static const String catalogName = 'catalog';
