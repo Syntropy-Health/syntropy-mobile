@@ -95,5 +95,50 @@ void main() {
         isTrue,
       );
     });
+
+    test('is case-insensitive for keyword matching', () {
+      final entries = parser.parse('TOOK Creatine');
+      expect(entries.length, 1);
+      expect(entries.first.entryType, EntryType.supplement);
+    });
+
+    test('handles special characters gracefully', () {
+      final entries = parser.parse("took creatine! & had eggs #breakfast");
+      expect(entries, isNotEmpty);
+      // Should not crash; at minimum produces a note
+      for (final entry in entries) {
+        expect(entry.content, isNotEmpty);
+      }
+    });
+
+    test('trims leading and trailing whitespace from segments', () {
+      final entries = parser.parse('  took creatine  and  had eggs  ');
+      expect(entries.length, 2);
+      expect(entries[0].content, isNot(startsWith(' ')));
+      expect(entries[1].content, isNot(startsWith(' ')));
+    });
+
+    test('single word matching a keyword produces one entry', () {
+      final entries = parser.parse('headache');
+      expect(entries.length, 1);
+      expect(entries.first.entryType, EntryType.symptom);
+      expect(entries.first.content, 'headache');
+    });
+
+    test('splits on sentence-ending periods', () {
+      final entries =
+          parser.parse('Took magnesium. Had salmon for lunch');
+      expect(entries.length, 2);
+      expect(entries[0].entryType, EntryType.supplement);
+      expect(entries[1].entryType, EntryType.meal);
+    });
+
+    test('supplement keywords take priority over meal keywords', () {
+      // "took" is a supplement keyword, "eggs" is a meal keyword
+      // When in the same segment, supplement should win because it is checked first
+      final entries = parser.parse('took eggs as a supplement');
+      expect(entries.length, 1);
+      expect(entries.first.entryType, EntryType.supplement);
+    });
   });
 }

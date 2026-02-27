@@ -4,6 +4,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../data/models/health_journal_entry.dart';
 import '../../domain/entry_parser_service.dart';
+import '../entry_type_ui.dart';
 
 class ConfirmCheckInSheet extends StatefulWidget {
   const ConfirmCheckInSheet({
@@ -54,52 +55,26 @@ class _ConfirmCheckInSheetState extends State<ConfirmCheckInSheet> {
   void initState() {
     super.initState();
     _entries = widget.parsedEntries
-        .map((e) => _EditableEntry(
-              entryType: e.entryType,
-              content: e.content,
-              isIncluded: true,
-            ))
+        .map(
+          (e) => _EditableEntry(
+            entryType: e.entryType,
+            content: e.content,
+            isIncluded: true,
+          ),
+        )
         .toList();
 
     // If parser produced nothing, fall back to a single note
     if (_entries.isEmpty) {
-      _entries.add(_EditableEntry(
-        entryType: EntryType.note,
-        content: widget.transcription,
-        isIncluded: true,
-      ));
+      _entries.add(
+        _EditableEntry(
+          entryType: EntryType.note,
+          content: widget.transcription,
+          isIncluded: true,
+        ),
+      );
     }
   }
-
-  IconData _iconForType(EntryType type) => switch (type) {
-        EntryType.meal => Icons.restaurant,
-        EntryType.supplement => Icons.medication,
-        EntryType.symptom => Icons.warning_amber,
-        EntryType.exercise => Icons.fitness_center,
-        EntryType.sleep => Icons.bedtime,
-        EntryType.mood => Icons.mood,
-        EntryType.note => Icons.note,
-      };
-
-  Color _colorForType(EntryType type) => switch (type) {
-        EntryType.meal => AppColors.nutrition,
-        EntryType.supplement => AppColors.supplements,
-        EntryType.symptom => AppColors.error,
-        EntryType.exercise => AppColors.exercise,
-        EntryType.sleep => AppColors.sleep,
-        EntryType.mood => AppColors.mental,
-        EntryType.note => AppColors.textSecondary,
-      };
-
-  String _labelForType(EntryType type) => switch (type) {
-        EntryType.meal => 'Meal',
-        EntryType.supplement => 'Supplement',
-        EntryType.symptom => 'Symptom',
-        EntryType.exercise => 'Exercise',
-        EntryType.sleep => 'Sleep',
-        EntryType.mood => 'Mood',
-        EntryType.note => 'Note',
-      };
 
   void _confirm() {
     final confirmed = _entries
@@ -185,7 +160,7 @@ class _ConfirmCheckInSheetState extends State<ConfirmCheckInSheet> {
               itemCount: _entries.length,
               itemBuilder: (context, index) {
                 final entry = _entries[index];
-                final color = _colorForType(entry.entryType);
+                final color = entry.entryType.color;
 
                 return Card(
                   margin: const EdgeInsets.only(bottom: AppSpacing.xs),
@@ -197,13 +172,13 @@ class _ConfirmCheckInSheetState extends State<ConfirmCheckInSheet> {
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
-                        _iconForType(entry.entryType),
+                        entry.entryType.icon,
                         color: entry.isIncluded ? color : AppColors.textTertiary,
                         size: 20,
                       ),
                     ),
                     title: Text(
-                      _labelForType(entry.entryType),
+                      entry.entryType.label,
                       style: TextStyle(
                         color: entry.isIncluded
                             ? null
@@ -271,7 +246,7 @@ class _ConfirmCheckInSheetState extends State<ConfirmCheckInSheet> {
 }
 
 class _EditableEntry {
-  _EditableEntry({
+  const _EditableEntry({
     required this.entryType,
     required this.content,
     required this.isIncluded,

@@ -217,7 +217,7 @@ class _CheckInPageState extends ConsumerState<CheckInPage> {
                 ),
                 child: Row(
                   children: [
-                    Expanded(
+                    const Expanded(
                       child: Divider(color: AppColors.border),
                     ),
                     Padding(
@@ -231,7 +231,7 @@ class _CheckInPageState extends ConsumerState<CheckInPage> {
                             ),
                       ),
                     ),
-                    Expanded(
+                    const Expanded(
                       child: Divider(color: AppColors.border),
                     ),
                   ],
@@ -298,7 +298,7 @@ class _CheckInPageState extends ConsumerState<CheckInPage> {
                   child: Center(
                     child: Column(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.error_outline,
                           size: 48,
                           color: AppColors.error,

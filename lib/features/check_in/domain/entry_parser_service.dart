@@ -141,18 +141,22 @@ class EntryParserService {
       if (trimmed.isEmpty) continue;
 
       final entryType = _classifySegment(trimmed);
-      entries.add(ParsedEntry(
-        entryType: entryType,
-        content: trimmed,
-      ));
+      entries.add(
+        ParsedEntry(
+          entryType: entryType,
+          content: trimmed,
+        ),
+      );
     }
 
     // If no entries were produced, fall back to a single note
     if (entries.isEmpty) {
-      entries.add(ParsedEntry(
-        entryType: EntryType.note,
-        content: transcription.trim(),
-      ));
+      entries.add(
+        ParsedEntry(
+          entryType: EntryType.note,
+          content: transcription.trim(),
+        ),
+      );
     }
 
     return entries;

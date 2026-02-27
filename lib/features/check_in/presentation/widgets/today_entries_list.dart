@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../data/models/health_journal_entry.dart';
+import '../entry_type_ui.dart';
 
 class TodayEntriesList extends StatelessWidget {
   const TodayEntriesList({
@@ -12,26 +13,6 @@ class TodayEntriesList extends StatelessWidget {
   });
 
   final List<HealthJournalEntry> entries;
-
-  IconData _iconForType(EntryType type) => switch (type) {
-        EntryType.meal => Icons.restaurant,
-        EntryType.supplement => Icons.medication,
-        EntryType.symptom => Icons.warning_amber,
-        EntryType.exercise => Icons.fitness_center,
-        EntryType.sleep => Icons.bedtime,
-        EntryType.mood => Icons.mood,
-        EntryType.note => Icons.note,
-      };
-
-  Color _colorForType(EntryType type) => switch (type) {
-        EntryType.meal => AppColors.nutrition,
-        EntryType.supplement => AppColors.supplements,
-        EntryType.symptom => AppColors.error,
-        EntryType.exercise => AppColors.exercise,
-        EntryType.sleep => AppColors.sleep,
-        EntryType.mood => AppColors.mental,
-        EntryType.note => AppColors.textSecondary,
-      };
 
   String _formatTime(DateTime? dateTime) {
     if (dateTime == null) return '';
@@ -47,7 +28,7 @@ class TodayEntriesList extends StatelessWidget {
           child: Center(
             child: Column(
               children: [
-                Icon(
+                const Icon(
                   Icons.check_circle_outline,
                   size: 48,
                   color: AppColors.textTertiary,
@@ -77,7 +58,7 @@ class TodayEntriesList extends StatelessWidget {
       delegate: SliverChildBuilderDelegate(
         (context, index) {
           final entry = entries[index];
-          final color = _colorForType(entry.entryType);
+          final color = entry.entryType.color;
 
           return Card(
             margin: const EdgeInsets.only(bottom: AppSpacing.xs),
@@ -89,7 +70,7 @@ class TodayEntriesList extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
-                  _iconForType(entry.entryType),
+                  entry.entryType.icon,
                   color: color,
                   size: 20,
                 ),

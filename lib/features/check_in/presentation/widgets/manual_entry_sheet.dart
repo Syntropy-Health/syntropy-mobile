@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../data/models/health_journal_entry.dart';
+import '../entry_type_ui.dart';
 
 class ManualEntrySheet extends StatefulWidget {
   const ManualEntrySheet({
@@ -55,48 +56,10 @@ class _ManualEntrySheetState extends State<ManualEntrySheet> {
     super.dispose();
   }
 
-  IconData get _icon => switch (widget.entryType) {
-        EntryType.meal => Icons.restaurant,
-        EntryType.supplement => Icons.medication,
-        EntryType.symptom => Icons.warning_amber,
-        EntryType.exercise => Icons.fitness_center,
-        EntryType.sleep => Icons.bedtime,
-        EntryType.mood => Icons.mood,
-        EntryType.note => Icons.note,
-      };
-
-  Color get _color => switch (widget.entryType) {
-        EntryType.meal => AppColors.nutrition,
-        EntryType.supplement => AppColors.supplements,
-        EntryType.symptom => AppColors.error,
-        EntryType.exercise => AppColors.exercise,
-        EntryType.sleep => AppColors.sleep,
-        EntryType.mood => AppColors.mental,
-        EntryType.note => AppColors.textSecondary,
-      };
-
-  String get _label => switch (widget.entryType) {
-        EntryType.meal => 'Meal',
-        EntryType.supplement => 'Supplement',
-        EntryType.symptom => 'Symptom',
-        EntryType.exercise => 'Exercise',
-        EntryType.sleep => 'Sleep',
-        EntryType.mood => 'Mood',
-        EntryType.note => 'Note',
-      };
-
-  String get _hintText => switch (widget.entryType) {
-        EntryType.meal => 'What did you eat? e.g., grilled chicken with rice',
-        EntryType.supplement => 'What did you take? e.g., creatine 5g',
-        EntryType.symptom => 'What are you feeling? e.g., mild headache',
-        EntryType.exercise => 'What exercise did you do? e.g., 30 min run',
-        EntryType.sleep => 'How did you sleep? e.g., 7 hours, woke up rested',
-        EntryType.mood => 'How are you feeling? e.g., calm and focused',
-        EntryType.note => 'What would you like to note?',
-      };
-
   @override
   Widget build(BuildContext context) {
+    final color = widget.entryType.color;
+
     return Padding(
       padding: EdgeInsets.only(
         left: AppSpacing.md,
@@ -127,14 +90,14 @@ class _ManualEntrySheetState extends State<ManualEntrySheet> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: _color.withOpacity(0.1),
+                  color: color.withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(_icon, color: _color, size: 24),
+                child: Icon(widget.entryType.icon, color: color, size: 24),
               ),
               const SizedBox(width: AppSpacing.sm),
               Text(
-                'Log $_label',
+                'Log ${widget.entryType.label}',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -150,7 +113,7 @@ class _ManualEntrySheetState extends State<ManualEntrySheet> {
             maxLines: 3,
             textCapitalization: TextCapitalization.sentences,
             decoration: InputDecoration(
-              hintText: _hintText,
+              hintText: widget.entryType.hintText,
               border: OutlineInputBorder(
                 borderRadius: AppSpacing.borderRadiusMd,
               ),
