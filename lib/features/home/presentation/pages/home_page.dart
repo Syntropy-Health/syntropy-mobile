@@ -111,9 +111,9 @@ class HomePage extends ConsumerWidget {
                         Expanded(
                           child: QuickActionButton(
                             icon: Icons.mic,
-                            label: 'Voice Note',
+                            label: 'Check In',
                             color: AppColors.primary,
-                            onTap: () => context.go(Routes.voiceNotes),
+                            onTap: () => context.go(Routes.checkIn),
                           ),
                         ),
                         const SizedBox(width: AppSpacing.sm),
@@ -122,7 +122,7 @@ class HomePage extends ConsumerWidget {
                             icon: Icons.restaurant_menu,
                             label: 'Log Meal',
                             color: AppColors.nutrition,
-                            onTap: () => context.go(Routes.voiceNotes),
+                            onTap: () => context.go(Routes.checkIn),
                           ),
                         ),
                         const SizedBox(width: AppSpacing.sm),

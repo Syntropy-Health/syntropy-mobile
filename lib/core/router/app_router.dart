@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/catalog/presentation/pages/catalog_page.dart';
+import '../../features/check_in/presentation/pages/check_in_page.dart';
 import '../../features/health_analysis/presentation/pages/health_analysis_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/notifications/presentation/pages/notifications_page.dart';
@@ -24,6 +25,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             name: Routes.homeName,
             pageBuilder: (context, state) => const NoTransitionPage(
               child: HomePage(),
+            ),
+          ),
+          GoRoute(
+            path: Routes.checkIn,
+            name: Routes.checkInName,
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: CheckInPage(),
             ),
           ),
           GoRoute(

@@ -14,7 +14,7 @@ class MainScaffold extends StatelessWidget {
 
   int _calculateSelectedIndex(BuildContext context) {
     final location = GoRouterState.of(context).uri.path;
-    if (location.startsWith(Routes.voiceNotes)) return 1;
+    if (location.startsWith(Routes.checkIn)) return 1;
     if (location.startsWith(Routes.healthAnalysis)) return 2;
     if (location.startsWith(Routes.catalog)) return 3;
     if (location.startsWith(Routes.settings)) return 4;
@@ -27,7 +27,7 @@ class MainScaffold extends StatelessWidget {
         context.go(Routes.home);
         break;
       case 1:
-        context.go(Routes.voiceNotes);
+        context.go(Routes.checkIn);
         break;
       case 2:
         context.go(Routes.healthAnalysis);
@@ -55,9 +55,9 @@ class MainScaffold extends StatelessWidget {
             label: 'Home',
           ),
           NavigationDestination(
-            icon: Icon(Icons.mic_outlined),
-            selectedIcon: Icon(Icons.mic, color: AppColors.primary),
-            label: 'Voice',
+            icon: Icon(Icons.add_circle_outline),
+            selectedIcon: Icon(Icons.add_circle, color: AppColors.primary),
+            label: 'Check-in',
           ),
           NavigationDestination(
             icon: Icon(Icons.insights_outlined),
