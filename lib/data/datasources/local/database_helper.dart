@@ -6,7 +6,7 @@ import '../../../core/utils/logger.dart';
 
 class DatabaseHelper {
   static const String _dbName = 'syntropy_health.db';
-  static const int _dbVersion = 1;
+  static const int _dbVersion = 2;
 
   Database? _database;
 
@@ -127,6 +127,20 @@ class DatabaseHelper {
       )
     ''');
 
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS quick_log_presets (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        entry_type TEXT NOT NULL,
+        content TEXT NOT NULL,
+        display_name TEXT NOT NULL DEFAULT '',
+        use_count INTEGER NOT NULL DEFAULT 0,
+        is_pinned INTEGER NOT NULL DEFAULT 0,
+        created_at TEXT NOT NULL,
+        last_used_at TEXT
+      )
+    ''');
+
     await db.execute(
         'CREATE INDEX idx_journal_sync ON health_journal_entries(sync_status)');
     await db.execute(
@@ -144,6 +158,22 @@ class DatabaseHelper {
       'Database upgrade from $oldVersion to $newVersion',
       'DatabaseHelper',
     );
+
+    if (oldVersion < 2) {
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS quick_log_presets (
+          id TEXT PRIMARY KEY,
+          user_id TEXT NOT NULL,
+          entry_type TEXT NOT NULL,
+          content TEXT NOT NULL,
+          display_name TEXT NOT NULL DEFAULT '',
+          use_count INTEGER NOT NULL DEFAULT 0,
+          is_pinned INTEGER NOT NULL DEFAULT 0,
+          created_at TEXT NOT NULL,
+          last_used_at TEXT
+        )
+      ''');
+    }
   }
 
   Future<int> insert(String table, Map<String, dynamic> data) async {

@@ -12,6 +12,7 @@ import '../widgets/check_in_recording_button.dart';
 import '../widgets/confirm_check_in_sheet.dart';
 import '../widgets/entry_type_chip.dart';
 import '../widgets/manual_entry_sheet.dart';
+import '../widgets/quick_log_section.dart';
 import '../widgets/today_entries_list.dart';
 
 class CheckInPage extends ConsumerStatefulWidget {
@@ -206,6 +207,14 @@ class _CheckInPageState extends ConsumerState<CheckInPage> {
                     : CheckInRecordingButton(
                         onRecordingComplete: _handleRecordingComplete,
                       ),
+              ),
+            ),
+
+            // Quick Log presets section
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(top: AppSpacing.lg),
+                child: QuickLogSection(userId: _userId),
               ),
             ),
 
